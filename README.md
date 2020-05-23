@@ -270,25 +270,101 @@ cos(x), sin(x) etc
 log(x), log2(x), log10(x)
 exp(x)
 
+## reshaping data
 
+library(reshape2)
+### melting data frames on example of cars database
+mtcars <- rownames(mtcars)
+carMeld <- meld(mtcars, id=c("carname", "gear", "cyl"), measure.vars = c("mpg", "hp"))
+head(carMelt, n=3)
 
+### casting data frames
+#### summarize the dataset
+cylData <- dcast(carMeld, cyl ~ variable)
+cyl is past as rows, and the varialbes (mpg, hp) are as columns, default is length
 
+cylData <- dcast(carMeld, cyl ~ variable, mean)
+taking the mean instead of the count
 
+### averaging the values
+head(InsectSprays)
+tapply(InspectSprays$count, InspectSprays$spray, sum)
+apply the function sum to the count column, based on the spray column
 
+### another way is to split 
+spIns = split(InsectSprays$count, InsectSprays$spray)
+get a list of values for each spray
 
+sprCount = lapply(spIns, sum)
+get a sum for each list
 
+unlist(sprCount)
+get a table from a list
 
+### another way is to use the plyr package
 
+ddply(InsectSprays, .(spray), summarize, sum=sum(count))
+first we insert which db we want to use
+then we enter the column by which to group
+use .() so that we dont use quotation marks
+and then what action (sum) should be taken
 
+## Managing Data Frames with dplyr package (improved plyr package)
 
+- the first argument is always the data frame
+- the following arguements describe what to do with it, refer to columns directly with the name
+- the result is a new data frame
 
+### Basic tools
+library(dplyr)
 
+#### see the dimenstion of the db
+dim(db)
+#### see the structure
+str(db)
+#### get the index of certain column
+i <- match("columnname", names(db))
+#### select certain columns
+head(select(db, columnfrom:columnto))
+#### select all except certain columns
+head(select(db, -(columnfrom:columnto)))
+#### subset rows based on condition
+filter(db, columnname > 30)
+filter(db, columnname > 30 & columnname2 < 80)
+#### reorder the rows of the db based on the values of the column
+arrange(db, column) #for example date ascending by default
+arrange(db, desc(column)) # for descending order
+#### renaming columns
+rename(db, newname = oldname, newname2 = oldname2)
+#### mutate, creating new column based on other columns
+mutate(db, columnname = column1 - mean(column2, na.rm = TRUE))
+#### group by and summarize
+db1 <- mutate(db, newcolumn = factor(1 * (col > 50), labels = c("cold", "hot")))
+hotcold <- group_by(db, newcolumn)
+summarize(hotcold, column1 = mean(column1), col2 = max(col2), col3 = median(col3)
 
+#### group by year variable
+db1 <- mutate(db, year = as.POSIXlt(date)$year + 1900)
+years <- group_by(db, year)
+summarize(years, col1 = mean(col1, na.rm = TRUE), col2 = max(col2))
 
+#### special operator to chain operator together (pipeline operator feed the data from one operation to the other)
 
+db %>% mutate(operation) %>% group_by(operation) %>% summarize(operation)
 
+## Merging data
+db1
+db2
+### check the names to see on what to merge
+names(db1)
+names(db2)
+intersect(names(db1), names(db2))
+### important parameters
+merge(db1, db2, by, by.x, by.y, all) by default it will merge on same column names
 
+mergedData = merge(db1, db2, by.x ="columnx", by.y = "columny", all = TRUE)
 
-
-
+#### merging multiple datasets with plyr package
+dfList = list(df1, df2, df3)
+join_all(dfList)
 
