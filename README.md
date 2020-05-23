@@ -1,6 +1,21 @@
 # RStudio
 general functions for R
 
+## General functions
+
+### installing and loading packages
+
+install.packages("readxl")
+library("readxl")
+
+### installing and loading swirl
+
+library(swirl)
+install_from_swirl("Getting and Cleaning Data")
+swirl()
+
+
+
 ## MySQL DB - RMySQL library
 install.packages("RMySQL")
 library(RMySQL)
@@ -121,6 +136,158 @@ raster
 ### reading music data
 tuneR
 seewave
+
+### loading files from the internet
+
+url <- c('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx')
+file <- download.file(url, destfile = "data.xlsx")
+
+### loading file into dataframe
+
+dat <- read_excel("data2.xlsx", range = "G18:O23")
+
+df <- ?read_xlsx(".\\data2.xlsx", rowIndex = 18:23, colIndex = 7:15)
+read.xlsx
+
+## common functions
+###length
+length(data)
+###class
+class(data)
+###subset of column in dataframe
+nrow(subset(data, VAL == "24"))
+### getwd
+getwd()
+
+## dplyr functions
+###create object
+cran <- tbl_df(mydf)
+###select columns
+select(cran, columns)
+###filter columns
+filter(cran, column1 == x, column2 == y)
+###sorting the values
+arrange(cran2, desc(ip_id)
+### adding a column to the data object
+mutate(cran3, size_mb = size / 2^20)
+### summarizing the columns
+summarize(cran, avg_bytes = mean(size)) 
+
+## exploring the dataset
+head(db, n = 5)
+tail(db, n = 5)
+### summarize the db
+summary(db)
+str(db)
+### looking at the quantile distribution of a column
+quantile(db$column, na.rm=TRUE)
+quantile(db$column, probs = c(0.5, 0.75, 0.9))
+### making a table to explore the data
+table(db$column, useNA="ifany")
+### make a 2-D table by passing 2 columns to see the relationship between 2 variables
+table(db$column1, db$column2)
+### making cross tabs to compare the data
+xt <- xtabs(countedvariable ~ rowsvariable + colvariable, data = DF)
+### crosstabs against all the variables
+xt = xtabs(countervariable ~ ., data=DF)
+ftable(xt) # making a flat table to see all in one table
+
+## checking for missing values
+### check if columns contain NA
+sum(is.na(db$column))
+any(is.na(db§column))
+### check if all the values in a column satisfy a condition
+all(db$column > 0)
+### take sums across rows and columns
+colSums(is.na(db))
+all(colSums(is.na(db))== 0)
+
+## finding values with specific characteristics
+table(db$column %in% c("value"))
+table(db$column %in% c("value1", "value2", "value3"))
+### subsetting the db with this logic
+db[db$column %in% c("value"),]
+
+## Size of data set
+object.size(db) # size in bytes
+print(object.size(db), units = "Mb")
+
+## Creating new variables
+
+### getting data from the web
+if(!file.exists("./data")){dir.create("./data")}
+fileUrl <- "url"
+download.file(fileUrl, destfile = "./data/filename.csv", method = "curl")
+data <- read.csv("./data/filename.csv")
+
+### creating sequences
+s1 <- seq(start, stop, by= 2) # create a sequence increasing by 2
+s2 <- seq(start, stop, length = 3) # create a sequence of length 3
+x <- c(1,3,6,12,3); seq(along = x) # create a sequence of the same size as a vector
+
+### subsetting variables
+db$conditioncolumn = db$column %in% c("value1","value2")
+table(db$conditioncolumn)
+
+### creating binary variables
+db$conditioncolumn = ifelse(db$column < 0, TRUE, FALSE)
+table(db$condtioncolumn, db$column < 0)
+
+### creating categorical variables
+db$conditioncol = cut(db$column, breaks=quantile(condition$column)) # break up the values accroding to some condition in this case quantile
+table(db$conditioncol)
+table(db$conditioncol, db$column) # see how the values fall into the created groups. See how a quantitative variable into a categorical variable
+
+#### easier version with a library
+library(Hmisc)
+db$conditioncol = cut2(db$column, g=4) # break into 4 groups
+
+### creating factor variables
+db$newcol = factor(db$conditioncol)
+
+#### levels of factor variables (example)
+yesno <- sample(c("yes", "no"), size = 10, replace = TRUE)
+yesnofac <- factor(yesno, levels = c("yes", "no"))
+releve(yesnofac, ref="yes")
+as.numeric(yesnofac)
+
+#### cutting produces factor variables
+library(Hmisc)
+db$conditioncol = cut2(db$column, g=4)
+
+#### using the mutate function to do it at the same time
+library(Hmisc); library(plyr)
+db2 = mutate(db, newcol = cut2(conditioncol, g = 4))
+
+### common transforms
+abs(x) absolute value
+sqrt(x) square root
+ceilings(x) ceiling(3.475) is 4
+floor(x) floor(3.475) is 3
+round(x, digits = n) round(3.475, digits =2) is 3.48
+signif(x, digits = n) signif(3.475, digits = 2) is 3.5
+cos(x), sin(x) etc
+log(x), log2(x), log10(x)
+exp(x)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
