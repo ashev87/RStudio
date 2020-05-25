@@ -352,6 +352,47 @@ summarize(years, col1 = mean(col1, na.rm = TRUE), col2 = max(col2))
 
 db %>% mutate(operation) %>% group_by(operation) %>% summarize(operation)
 
+## Cleaning data with tidyr
+library(readr)
+library(dplyr)
+library(tidyr)
+
+### transforming data in column to observations in rows, i.e. column headers that are values, not variable names
+gather(students, sex, count, -grade) # example from swirl
+gather(students, key = "class" , value = "grade" ,class1:class5 ,na.rm = TRUE)
+### multiple variables are stored in one/several columns
+res <- gather(students2, sex_class, count, -grade) # step 1
+separate(res, sex_class, c("sex", "class")) # step 2 to separate the values in 1 column into 2 columns
+
+### turn values into columns
+spread(db, test , grade)
+
+### parse number from readr library to extract numbers from string
+mutate(class = parse_number(class))
+
+### script example
+students3 %>%
+  gather(class, grade, class1:class5, na.rm = TRUE) %>%
+  spread(test, grade) %>%
+  mutate(class = parse_number(class)) %>%
+  print
+
+### multiple observational units are stored in the same table
+separate data into two tables with select(), run unique() to remove duplicates
+
+### single observational unit is stored in multiple tables
+add a column (mutate()) with a "result" variable to both tables and then join with bind_rows(df1, df2)
+
+### script example for tidying data
+sat %>%
+  select(-contains("total")) %>%
+  gather(part_sex, count, -score_range) %>%
+  separate(part_sex, c("part", "sex")) %>%
+  group_by(part, sex) %>%
+  mutate(total = sum(count),
+         prop = count/total
+  ) %>% print
+
 ## Merging data
 db1
 db2
