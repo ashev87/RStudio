@@ -409,3 +409,122 @@ mergedData = merge(db1, db2, by.x ="columnx", by.y = "columny", all = TRUE)
 dfList = list(df1, df2, df3)
 join_all(dfList)
 
+## Text manipulation
+tolower() - make text lowercase
+strsplit(data, "character") strsplit(data, "\\.") split a string based on a character
+sub(variabletofind, variabletoreplacewith, element) replace the first character in a string with another character
+gsub(variabletofind, variabletoreplacewith, element) replace all the found characters with specified characters
+grep(search, data) find the value in the data
+table(grepl(search, data)) returns the number of times the search value is found in the data 
+
+### more useful string functions from stringr package
+library(stringr)
+nchar - count the number of characters in a string
+substr(str, firstvalue, lastvalue) - extract a part of the string 
+paste(value1, value2) - concatenate values with space
+paste0(value1, value2) - concatenate without space
+str_trim() - trim the space values in a string
+
+### function to extract first element of a list
+firstElement <- function(x){x[1]}
+sapply(variable, function)
+
+## Regular Expressions
+
+^ beginning of line
+$ end of line
+[a-z] character class
+[^?.]$ match all lines where "?" or "." are NOT at the end of the line
+[]
+. - any character
+ - either or (dash line)
+? - indicates that the expression is optional for example ( [Ww]\.)?
+* - (.*) repeat a character any number of times including none. it is always greedy
+questionmark can turn the greediness off. For example ^s(.*?)s$
++ - character at least one time
+{1, 5} - minimum and maximum number of matches of groups. Examples [1] exactly one, [1,] one or more, [,5] up to five
+\1 - replicate the phrase
+
+## Working with dates
+
+date() - current date as character
+now() - current date with time
+Sys.Date() - current date as date
+format(d2, %a &b %d) - format the date
+%d = day as number
+%a = abbreviated weekday
+%A = unabbreviated weekday
+%m = month (0-12)
+%b = abbreviated month
+%B = unabbreviated month
+%y = 2 digit year
+%Y = 4 digit year
+
+as.Date(x, format) - turn character into date
+
+dates can be substracted and added
+
+weekdays(x) - find out what day it was
+month(x) - findout what month
+julian(x) - how many days since the origin 1970-01-01
+
+### Lubridate library
+library(lubridate)
+ymd("20140108") turns into "2014-01-08 UTC"
+mdy("08/04/2013") turns into "2013-08-04 UTC"
+dmy("03-04-2013") turns into "2013-04-03 UTC"
+
+dealing with time
+ymd_hms("2011-08-03 10:15:03", tz = "Pacific")
+
+wday(x[1], label=TRUE) see what weekday
+
+update(this_moment, hours = 8, minutes = 34, seconds = 55) - update date or time
+
+with_tz(time, tz) - change the timezone of a date/time
+
+interval(start, end) - how much time has passed
+as.period(date) - to see how long its been
+
+## Data Rescources
+
+UN - data.un.org
+US - data.gov
+UK - data.gov.uk
+FR - data.gouv.fr
+DE - govdata.de
+Ghana - data.gov.gh
+Australia - data.gov.au
+Honk Kong - gov.hk/theme/psi/datasets/
+Japan - data.go.jp
+other - data.gov/opendatasites
+
+www.gapminder.org
+
+survey data - www.asdfree.com
+
+data marketplace - www.infochimp.com/marketplace
+
+www.kaggle.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
