@@ -217,7 +217,7 @@ print(object.size(db), units = "Mb")
 ### getting data from the web
 if(!file.exists("./data")){dir.create("./data")}
 fileUrl <- "url"
-download.file(fileUrl, destfile = "./data/filename.csv", method = "curl")
+download.file(fileUrl, destfile = "./data/filename.csv", method = "libcurl")
 data <- read.csv("./data/filename.csv")
 
 ### creating sequences
